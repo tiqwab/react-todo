@@ -4,12 +4,21 @@ import TodoList from './TodoList';
 import TodoSelector from './TodoSelector';
 
 class TodoBox extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      newTodoText: '',
+      todos: '',
+      selectedKind: 'ALL',
+    };
+  }
+
   render() {
     return (
       <div id="todo-box">
-        <TodoForm />
-        <TodoList todos={this.props.todos} />
-        <TodoSelector />
+        <TodoForm newTodoText={this.state.newTodoText} />
+        <TodoList todos={this.props.todos} selectedKind={this.state.selectedKind} />
+        <TodoSelector selectedKind={this.state.selectedKind} />
       </div>
     );
   }

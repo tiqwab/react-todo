@@ -2,7 +2,7 @@ import React from 'react';
 
 class Todo extends React.Component {
   render() {
-    const checkBoxName = `checkbox${this.props.key}`;
+    const checkBoxName = `checkbox${this.props.todoId}`;
     const checked = this.props.completed === true ? 'checked' : '';
 
     return (
@@ -15,7 +15,7 @@ class Todo extends React.Component {
 }
 
 Todo.propTypes = {
-  key: React.PropTypes.number,
+  todoId: React.PropTypes.number,
   title: React.PropTypes.string,
   completed: React.PropTypes.bool,
 };

@@ -20058,10 +20058,17 @@
 	var TodoBox = function (_React$Component) {
 	  _inherits(TodoBox, _React$Component);
 
-	  function TodoBox() {
+	  function TodoBox(props) {
 	    _classCallCheck(this, TodoBox);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(TodoBox).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TodoBox).call(this, props));
+
+	    _this.state = {
+	      newTodoText: '',
+	      todos: '',
+	      selectedKind: 'ALL'
+	    };
+	    return _this;
 	  }
 
 	  _createClass(TodoBox, [{
@@ -20070,9 +20077,9 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { id: 'todo-box' },
-	        _react2.default.createElement(_TodoForm2.default, null),
-	        _react2.default.createElement(_TodoList2.default, { todos: this.props.todos }),
-	        _react2.default.createElement(_TodoSelector2.default, null)
+	        _react2.default.createElement(_TodoForm2.default, { newTodoText: this.state.newTodoText }),
+	        _react2.default.createElement(_TodoList2.default, { todos: this.props.todos, selectedKind: this.state.selectedKind }),
+	        _react2.default.createElement(_TodoSelector2.default, { selectedKind: this.state.selectedKind })
 	      );
 	    }
 	  }]);
@@ -20125,13 +20132,17 @@
 	      return _react2.default.createElement(
 	        "div",
 	        { id: "todo-form" },
-	        _react2.default.createElement("input", { type: "text", name: "todo-item" })
+	        _react2.default.createElement("input", { type: "text", name: "todo-item", value: this.props.newTodoText })
 	      );
 	    }
 	  }]);
 
 	  return TodoForm;
 	}(_react2.default.Component);
+
+	TodoForm.propTypes = {
+	  newTodoText: _react2.default.PropTypes.string
+	};
 
 	exports.default = TodoForm;
 
@@ -20175,8 +20186,17 @@
 	  _createClass(TodoList, [{
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
 	      var todoNodes = this.props.todos.map(function (x) {
-	        return _react2.default.createElement(_Todo2.default, { key: x.id, title: x.title, completed: x.completed });
+	        return _react2.default.createElement(_Todo2.default, { key: x.id, todoId: x.id, title: x.title, completed: x.completed });
+	      }).filter(function (x) {
+	        if (_this2.props.selectedKind === 'ACTIVE') {
+	          return x.completed !== true;
+	        } else if (_this2.props.selectedKind === 'COMPLETED') {
+	          return x.completed === true;
+	        }
+	        return true;
 	      });
 
 	      return _react2.default.createElement(
@@ -20191,7 +20211,8 @@
 	}(_react2.default.Component);
 
 	TodoList.propTypes = {
-	  todos: _react2.default.PropTypes.array
+	  todos: _react2.default.PropTypes.array,
+	  selectedKind: _react2.default.PropTypes.string
 	};
 
 	exports.default = TodoList;
@@ -20232,7 +20253,7 @@
 	  _createClass(Todo, [{
 	    key: 'render',
 	    value: function render() {
-	      var checkBoxName = 'checkbox' + this.props.key;
+	      var checkBoxName = 'checkbox' + this.props.todoId;
 	      var checked = this.props.completed === true ? 'checked' : '';
 
 	      return _react2.default.createElement(
@@ -20252,7 +20273,7 @@
 	}(_react2.default.Component);
 
 	Todo.propTypes = {
-	  key: _react2.default.PropTypes.number,
+	  todoId: _react2.default.PropTypes.number,
 	  title: _react2.default.PropTypes.string,
 	  completed: _react2.default.PropTypes.bool
 	};
@@ -20295,12 +20316,13 @@
 	  _createClass(TodoSelector, [{
 	    key: "render",
 	    value: function render() {
+	      // React helps to select option programmatically by `value` attribute of <select>
 	      return _react2.default.createElement(
 	        "div",
 	        { id: "todo-selector" },
 	        _react2.default.createElement(
 	          "select",
-	          { name: "todo-select" },
+	          { name: "todo-select", value: this.props.selectedKind },
 	          _react2.default.createElement(
 	            "option",
 	            { value: "all" },
@@ -20323,6 +20345,10 @@
 
 	  return TodoSelector;
 	}(_react2.default.Component);
+
+	TodoSelector.propTypes = {
+	  selectedKind: _react2.default.PropTypes.string
+	};
 
 	exports.default = TodoSelector;
 
