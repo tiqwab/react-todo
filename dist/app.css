@@ -1,0 +1,122 @@
+body {
+  font-family: avenir next;
+  font-size: 14px;
+  color: #4A4A4A;
+  line-height: 20px;
+}
+
+#header, #footer {
+  padding: 16px 0px;
+}
+
+#header {
+  padding-top: 48px;
+  text-align: center;
+}
+
+#app {
+  text-align: center;
+}
+
+#todo-form {
+  padding: 16px 0;
+}
+
+#todo-form input {
+  background: #FFFFFF;
+  border: 1px solid #979797;
+  box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.50);
+  border-radius: 3px;
+  width: 300px;
+  height: 36px;
+  padding-left: 8px;
+  padding-right: 8px;
+  font-size: 14px;
+  color: #4A4A4A;
+  line-height: 20px;
+}
+
+#todo-list {
+  padding: 16px 0;
+}
+
+.todo label {
+  display: inline-block;
+  vertical-align: middle;
+  background: #FFFFFF;
+  border: 1px solid #979797;
+  border-radius: 6px;
+  width: 300px;
+  height: 34px;
+  padding: 0 8px;
+  text-align: left;
+  line-height: 34px;
+}
+
+.todo:not(:last-child):not(:first-child) {
+  margin: 4px;
+}
+
+#todo-selector {
+  padding: 16px 0;
+}
+
+#todo-selector select {
+  background-image: linear-gradient(-180deg, #F2F2F2 0%, #D4D4D4 100%);
+  border: 1px solid #979797;
+  box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.20), inset 0px 2px 0px 0px #FFFFFF;
+  border-radius: 3px;
+  width: 300px;
+  height: 36px;
+  font-size: 14px;
+  color: #4A4A4A;
+}
+
+#footer {
+  text-align: center;
+}
+
+h1 {
+  font-size: 36px;
+}
+
+#test input[type="checkbox"] {
+  display: none;
+}
+
+.label-test {
+  box-sizing: border-box;
+  -webkit-transition: background-color 0.2s linear;
+  transition: background-color 0.2s linear;
+  position: relative;
+  display: inline-block;
+  margin: 0 20px 8px 0;
+  padding: 12px 12px 12px 42px;
+  border-radius: 8px;
+  background-color: #f6f7f8;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.label-test:before {
+  -webkit-transition: opacity 0.2s linear;
+  transition: opacity 0.2s linear;
+  position: absolute;
+  top: 50%;
+  left: 21px;
+  display: block;
+  margin-top: -7px;
+  width: 5px;
+  height: 9px;
+  border-right: 3px solid #53b300;
+  border-bottom: 3px solid #53b300;
+  content: '';
+  opacity: 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+#test input[type="checkbox"] {
+  opacity: 1;
+}
