@@ -14,7 +14,13 @@ class Todo extends React.Component {
           checked={checked}
           onChange={this.props.onToggle}
         />
-        <label htmlFor={checkBoxName}>{this.props.title}</label>
+        <div className="todo-label">
+          <label htmlFor={checkBoxName}>{this.props.title}</label>
+          <button
+            className="delete-btn"
+            onClick={this.props.deleteTodo}
+          >×</button>
+        </div>
       </div>
     );
   }
@@ -25,6 +31,7 @@ Todo.propTypes = {
   title: React.PropTypes.string,
   completed: React.PropTypes.bool,
   onToggle: React.PropTypes.func,
+  deleteTodo: React.PropTypes.func,
 };
 
 export default Todo;

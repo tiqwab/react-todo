@@ -15,6 +15,7 @@ class TodoBox extends React.Component {
     this.onUserToggle = this.onUserToggle.bind(this);
     this.onUserSelect = this.onUserSelect.bind(this);
     this.onUserSubmit = this.onUserSubmit.bind(this);
+    this.deleteTodo = this.deleteTodo.bind(this);
   }
 
   onUserInput(inputText) {
@@ -54,6 +55,12 @@ class TodoBox extends React.Component {
     });
   }
 
+  deleteTodo(todo) {
+    this.setState({
+      todos: this.state.todos.filter(x => x !== todo),
+    });
+  }
+
   render() {
     return (
       <div id="todo-box">
@@ -66,6 +73,7 @@ class TodoBox extends React.Component {
           todos={this.state.todos}
           selectedKind={this.state.selectedKind}
           onUserToggle={this.onUserToggle}
+          deleteTodo={this.deleteTodo}
         />
         <TodoSelector
           selectedKind={this.state.selectedKind}

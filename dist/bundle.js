@@ -20072,6 +20072,7 @@
 	    _this.onUserToggle = _this.onUserToggle.bind(_this);
 	    _this.onUserSelect = _this.onUserSelect.bind(_this);
 	    _this.onUserSubmit = _this.onUserSubmit.bind(_this);
+	    _this.deleteTodo = _this.deleteTodo.bind(_this);
 	    return _this;
 	  }
 
@@ -20119,6 +20120,15 @@
 	      });
 	    }
 	  }, {
+	    key: 'deleteTodo',
+	    value: function deleteTodo(todo) {
+	      this.setState({
+	        todos: this.state.todos.filter(function (x) {
+	          return x !== todo;
+	        })
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -20132,7 +20142,8 @@
 	        _react2.default.createElement(_TodoList2.default, {
 	          todos: this.state.todos,
 	          selectedKind: this.state.selectedKind,
-	          onUserToggle: this.onUserToggle
+	          onUserToggle: this.onUserToggle,
+	          deleteTodo: this.deleteTodo
 	        }),
 	        _react2.default.createElement(_TodoSelector2.default, {
 	          selectedKind: this.state.selectedKind,
@@ -20274,18 +20285,25 @@
 	      this.props.onUserToggle(todo);
 	    }
 	  }, {
+	    key: 'deleteTodo',
+	    value: function deleteTodo(todo) {
+	      this.props.deleteTodo(todo);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
 
 	      var todoNodes = this.props.todos.map(function (x) {
 	        var onToggle = _this2.onUserToggle.bind(_this2, x);
+	        var deleteTodo = _this2.deleteTodo.bind(_this2, x);
 	        return _react2.default.createElement(_Todo2.default, {
 	          key: x.id,
 	          todoId: x.id,
 	          title: x.title,
 	          completed: x.completed,
-	          onToggle: onToggle
+	          onToggle: onToggle,
+	          deleteTodo: deleteTodo
 	        });
 	      }).filter(function (x) {
 	        if (_this2.props.selectedKind === 'ACTIVE') {
@@ -20310,7 +20328,8 @@
 	TodoList.propTypes = {
 	  todos: _react2.default.PropTypes.array,
 	  selectedKind: _react2.default.PropTypes.string,
-	  onUserToggle: _react2.default.PropTypes.func
+	  onUserToggle: _react2.default.PropTypes.func,
+	  deleteTodo: _react2.default.PropTypes.func
 	};
 
 	exports.default = TodoList;
@@ -20365,9 +20384,21 @@
 	          onChange: this.props.onToggle
 	        }),
 	        _react2.default.createElement(
-	          'label',
-	          { htmlFor: checkBoxName },
-	          this.props.title
+	          'div',
+	          { className: 'todo-label' },
+	          _react2.default.createElement(
+	            'label',
+	            { htmlFor: checkBoxName },
+	            this.props.title
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            {
+	              className: 'delete-btn',
+	              onClick: this.props.deleteTodo
+	            },
+	            '×'
+	          )
 	        )
 	      );
 	    }
@@ -20380,7 +20411,8 @@
 	  todoId: _react2.default.PropTypes.number,
 	  title: _react2.default.PropTypes.string,
 	  completed: _react2.default.PropTypes.bool,
-	  onToggle: _react2.default.PropTypes.func
+	  onToggle: _react2.default.PropTypes.func,
+	  deleteTodo: _react2.default.PropTypes.func
 	};
 
 	exports.default = Todo;

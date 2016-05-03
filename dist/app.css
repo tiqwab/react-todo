@@ -40,7 +40,8 @@ body {
   padding: 16px 0;
 }
 
-.todo label {
+.todo-label {
+  position: relative;
   display: inline-block;
   vertical-align: middle;
   background: #FFFFFF;
@@ -53,8 +54,36 @@ body {
   line-height: 34px;
 }
 
-.todo:not(:last-child):not(:first-child) {
+.todo .delete-btn {
+  position: absolute;
+  right: 12px;
+  top: 0;
+  bottom: 4px;
+  width: 30px;
+  height: 24px;
+  border: none;
+  background: none;
+  font-size: 24px;
+  line-height: 24px;
+  margin: auto 0;
+  color: #D0808A
+}
+
+.todo .delete-btn:hover {
+  cursor: pointer;
+  color: #D0021B
+}
+
+.todo {
   margin: 4px;
+}
+
+.todo:first-child {
+  margin-top: 0px;
+}
+
+.todo:last-child {
+  margin-bottom: 0px;
 }
 
 #todo-selector {

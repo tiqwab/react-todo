@@ -6,9 +6,14 @@ class TodoList extends React.Component {
     this.props.onUserToggle(todo);
   }
 
+  deleteTodo(todo) {
+    this.props.deleteTodo(todo);
+  }
+
   render() {
     const todoNodes = this.props.todos.map((x) => {
       const onToggle = this.onUserToggle.bind(this, x);
+      const deleteTodo = this.deleteTodo.bind(this, x);
       return (
         <Todo
           key={x.id}
@@ -16,6 +21,7 @@ class TodoList extends React.Component {
           title={x.title}
           completed={x.completed}
           onToggle={onToggle}
+          deleteTodo={deleteTodo}
         />
       );
     }).filter((x) => {
@@ -39,6 +45,7 @@ TodoList.propTypes = {
   todos: React.PropTypes.array,
   selectedKind: React.PropTypes.string,
   onUserToggle: React.PropTypes.func,
+  deleteTodo: React.PropTypes.func,
 };
 
 export default TodoList;
