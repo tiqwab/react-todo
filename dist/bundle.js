@@ -20071,6 +20071,7 @@
 	    _this.onUserInput = _this.onUserInput.bind(_this);
 	    _this.onUserToggle = _this.onUserToggle.bind(_this);
 	    _this.onUserSelect = _this.onUserSelect.bind(_this);
+	    _this.onUserSubmit = _this.onUserSubmit.bind(_this);
 	    return _this;
 	  }
 
@@ -20103,6 +20104,21 @@
 	      });
 	    }
 	  }, {
+	    key: 'onUserSubmit',
+	    value: function onUserSubmit(inputText) {
+	      var maxId = this.state.todos.reduce(function (x, y) {
+	        return x > y.id ? x : y.id;
+	      }, 0);
+	      this.setState({
+	        todos: this.state.todos.concat([{
+	          id: maxId + 1,
+	          title: inputText,
+	          completed: false
+	        }]),
+	        newTodoText: ''
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -20110,7 +20126,8 @@
 	        { id: 'todo-box' },
 	        _react2.default.createElement(_TodoForm2.default, {
 	          newTodoText: this.state.newTodoText,
-	          onUserInput: this.onUserInput
+	          onUserInput: this.onUserInput,
+	          onUserSubmit: this.onUserSubmit
 	        }),
 	        _react2.default.createElement(_TodoList2.default, {
 	          todos: this.state.todos,
@@ -20167,6 +20184,7 @@
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TodoForm).call(this, props));
 
 	    _this.handleChange = _this.handleChange.bind(_this);
+	    _this.handleSubmit = _this.handleSubmit.bind(_this);
 	    return _this;
 	  }
 
@@ -20176,18 +20194,28 @@
 	      this.props.onUserInput(this.refs.todoTextInput.value);
 	    }
 	  }, {
+	    key: "handleSubmit",
+	    value: function handleSubmit(e) {
+	      e.preventDefault();
+	      this.props.onUserSubmit(this.refs.todoTextInput.value);
+	    }
+	  }, {
 	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
 	        "div",
 	        { id: "todo-form" },
-	        _react2.default.createElement("input", {
-	          type: "text",
-	          name: "todo-item",
-	          value: this.props.newTodoText,
-	          ref: "todoTextInput",
-	          onChange: this.handleChange
-	        })
+	        _react2.default.createElement(
+	          "form",
+	          { action: "#", onSubmit: this.handleSubmit },
+	          _react2.default.createElement("input", {
+	            type: "text",
+	            name: "todo-item",
+	            value: this.props.newTodoText,
+	            ref: "todoTextInput",
+	            onChange: this.handleChange
+	          })
+	        )
 	      );
 	    }
 	  }]);
@@ -20197,7 +20225,8 @@
 
 	TodoForm.propTypes = {
 	  newTodoText: _react2.default.PropTypes.string,
-	  onUserInput: _react2.default.PropTypes.func
+	  onUserInput: _react2.default.PropTypes.func,
+	  onUserSubmit: _react2.default.PropTypes.func
 	};
 
 	exports.default = TodoForm;

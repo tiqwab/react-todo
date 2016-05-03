@@ -14,6 +14,7 @@ class TodoBox extends React.Component {
     this.onUserInput = this.onUserInput.bind(this);
     this.onUserToggle = this.onUserToggle.bind(this);
     this.onUserSelect = this.onUserSelect.bind(this);
+    this.onUserSubmit = this.onUserSubmit.bind(this);
   }
 
   onUserInput(inputText) {
@@ -41,12 +42,25 @@ class TodoBox extends React.Component {
     });
   }
 
+  onUserSubmit(inputText) {
+    const maxId = this.state.todos.reduce((x, y) => ((x > y.id) ? x : y.id), 0);
+    this.setState({
+      todos: this.state.todos.concat([{
+        id: maxId + 1,
+        title: inputText,
+        completed: false,
+      }]),
+      newTodoText: '',
+    });
+  }
+
   render() {
     return (
       <div id="todo-box">
         <TodoForm
           newTodoText={this.state.newTodoText}
           onUserInput={this.onUserInput}
+          onUserSubmit={this.onUserSubmit}
         />
         <TodoList
           todos={this.state.todos}
