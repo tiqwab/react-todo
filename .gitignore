@@ -10,3 +10,4 @@ npm-debug.log
 # sketch
 *.sketch
 
+dist/bundle.js
