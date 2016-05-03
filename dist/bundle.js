@@ -20065,21 +20065,62 @@
 
 	    _this.state = {
 	      newTodoText: '',
-	      todos: '',
+	      todos: _this.props.todos,
 	      selectedKind: 'ALL'
 	    };
+	    _this.onUserInput = _this.onUserInput.bind(_this);
+	    _this.onUserToggle = _this.onUserToggle.bind(_this);
+	    _this.onUserSelect = _this.onUserSelect.bind(_this);
 	    return _this;
 	  }
 
 	  _createClass(TodoBox, [{
+	    key: 'onUserInput',
+	    value: function onUserInput(inputText) {
+	      this.setState({
+	        newTodoText: inputText
+	      });
+	    }
+	  }, {
+	    key: 'onUserToggle',
+	    value: function onUserToggle(todoToToggle) {
+	      this.setState({
+	        todos: this.state.todos.map(function (x) {
+	          if (x === todoToToggle) {
+	            var newTodo = {};
+	            Object.assign(newTodo, x, { completed: !x.completed });
+	            return newTodo;
+	          }
+	          return x;
+	        })
+	      });
+	    }
+	  }, {
+	    key: 'onUserSelect',
+	    value: function onUserSelect(selectValue) {
+	      this.setState({
+	        selectedKind: selectValue
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
 	        { id: 'todo-box' },
-	        _react2.default.createElement(_TodoForm2.default, { newTodoText: this.state.newTodoText }),
-	        _react2.default.createElement(_TodoList2.default, { todos: this.props.todos, selectedKind: this.state.selectedKind }),
-	        _react2.default.createElement(_TodoSelector2.default, { selectedKind: this.state.selectedKind })
+	        _react2.default.createElement(_TodoForm2.default, {
+	          newTodoText: this.state.newTodoText,
+	          onUserInput: this.onUserInput
+	        }),
+	        _react2.default.createElement(_TodoList2.default, {
+	          todos: this.state.todos,
+	          selectedKind: this.state.selectedKind,
+	          onUserToggle: this.onUserToggle
+	        }),
+	        _react2.default.createElement(_TodoSelector2.default, {
+	          selectedKind: this.state.selectedKind,
+	          onUserSelect: this.onUserSelect
+	        })
 	      );
 	    }
 	  }]);
@@ -20120,19 +20161,33 @@
 	var TodoForm = function (_React$Component) {
 	  _inherits(TodoForm, _React$Component);
 
-	  function TodoForm() {
+	  function TodoForm(props) {
 	    _classCallCheck(this, TodoForm);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(TodoForm).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TodoForm).call(this, props));
+
+	    _this.handleChange = _this.handleChange.bind(_this);
+	    return _this;
 	  }
 
 	  _createClass(TodoForm, [{
+	    key: "handleChange",
+	    value: function handleChange() {
+	      this.props.onUserInput(this.refs.todoTextInput.value);
+	    }
+	  }, {
 	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
 	        "div",
 	        { id: "todo-form" },
-	        _react2.default.createElement("input", { type: "text", name: "todo-item", value: this.props.newTodoText })
+	        _react2.default.createElement("input", {
+	          type: "text",
+	          name: "todo-item",
+	          value: this.props.newTodoText,
+	          ref: "todoTextInput",
+	          onChange: this.handleChange
+	        })
 	      );
 	    }
 	  }]);
@@ -20141,7 +20196,8 @@
 	}(_react2.default.Component);
 
 	TodoForm.propTypes = {
-	  newTodoText: _react2.default.PropTypes.string
+	  newTodoText: _react2.default.PropTypes.string,
+	  onUserInput: _react2.default.PropTypes.func
 	};
 
 	exports.default = TodoForm;
@@ -20184,17 +20240,29 @@
 	  }
 
 	  _createClass(TodoList, [{
+	    key: 'onUserToggle',
+	    value: function onUserToggle(todo) {
+	      this.props.onUserToggle(todo);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
 
 	      var todoNodes = this.props.todos.map(function (x) {
-	        return _react2.default.createElement(_Todo2.default, { key: x.id, todoId: x.id, title: x.title, completed: x.completed });
+	        var onToggle = _this2.onUserToggle.bind(_this2, x);
+	        return _react2.default.createElement(_Todo2.default, {
+	          key: x.id,
+	          todoId: x.id,
+	          title: x.title,
+	          completed: x.completed,
+	          onToggle: onToggle
+	        });
 	      }).filter(function (x) {
 	        if (_this2.props.selectedKind === 'ACTIVE') {
-	          return x.completed !== true;
+	          return x.props.completed === false;
 	        } else if (_this2.props.selectedKind === 'COMPLETED') {
-	          return x.completed === true;
+	          return x.props.completed === true;
 	        }
 	        return true;
 	      });
@@ -20212,7 +20280,8 @@
 
 	TodoList.propTypes = {
 	  todos: _react2.default.PropTypes.array,
-	  selectedKind: _react2.default.PropTypes.string
+	  selectedKind: _react2.default.PropTypes.string,
+	  onUserToggle: _react2.default.PropTypes.func
 	};
 
 	exports.default = TodoList;
@@ -20259,7 +20328,13 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'todo' },
-	        _react2.default.createElement('input', { type: 'checkbox', name: checkBoxName, className: 'todo-checkbox', checked: checked }),
+	        _react2.default.createElement('input', {
+	          type: 'checkbox',
+	          name: checkBoxName,
+	          className: 'todo-checkbox',
+	          checked: checked,
+	          onChange: this.props.onToggle
+	        }),
 	        _react2.default.createElement(
 	          'label',
 	          { htmlFor: checkBoxName },
@@ -20275,7 +20350,8 @@
 	Todo.propTypes = {
 	  todoId: _react2.default.PropTypes.number,
 	  title: _react2.default.PropTypes.string,
-	  completed: _react2.default.PropTypes.bool
+	  completed: _react2.default.PropTypes.bool,
+	  onToggle: _react2.default.PropTypes.func
 	};
 
 	exports.default = Todo;
@@ -20307,13 +20383,21 @@
 	var TodoSelector = function (_React$Component) {
 	  _inherits(TodoSelector, _React$Component);
 
-	  function TodoSelector() {
+	  function TodoSelector(props) {
 	    _classCallCheck(this, TodoSelector);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(TodoSelector).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TodoSelector).call(this, props));
+
+	    _this.onSelect = _this.onSelect.bind(_this);
+	    return _this;
 	  }
 
 	  _createClass(TodoSelector, [{
+	    key: "onSelect",
+	    value: function onSelect(e) {
+	      this.props.onUserSelect(e.target.value.toUpperCase());
+	    }
+	  }, {
 	    key: "render",
 	    value: function render() {
 	      // React helps to select option programmatically by `value` attribute of <select>
@@ -20322,7 +20406,11 @@
 	        { id: "todo-selector" },
 	        _react2.default.createElement(
 	          "select",
-	          { name: "todo-select", value: this.props.selectedKind },
+	          {
+	            name: "todo-select",
+	            value: this.props.selectedKind.toLowerCase(),
+	            onChange: this.onSelect
+	          },
 	          _react2.default.createElement(
 	            "option",
 	            { value: "all" },
@@ -20347,7 +20435,8 @@
 	}(_react2.default.Component);
 
 	TodoSelector.propTypes = {
-	  selectedKind: _react2.default.PropTypes.string
+	  selectedKind: _react2.default.PropTypes.string,
+	  onUserSelect: _react2.default.PropTypes.func
 	};
 
 	exports.default = TodoSelector;
